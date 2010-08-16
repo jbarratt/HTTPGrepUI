@@ -1,0 +1,43 @@
+
+
+<p>Current run: [%= hg.r.llen('uri_queue') %] remaining of [%= hg.r.get('scan_size') %], completion estimated in [%= hg.completion_estimate %]</p>
+
+<table>
+    <thead>
+        <tr>
+            <th scope="col">Search</th>
+            [% FOR c IN hg.r.smembers('ptr_classifications').sort %]
+            <th scope="col">[%= c %]</th>
+            [% END %]
+        </tr>
+    </thead>
+    <tbody>
+        [% FOR p IN hg.search_pat.keys %]    
+            <tr>
+                <th scope="row">[%= p %]</th>
+                [% FOR c IN hg.r.smembers('ptr_classifications').sort %]
+                    <td><a href="/searches/[%= p %]/keys/[%= c %]">[% hg.r.scard("last_match:$p:$c") %]</a></td>
+                [% END %]
+            </tr>
+        [% END %]
+    </tbody>
+</table>
+
+<table>
+    <thead>
+        <tr>
+            <th scope="col">Search</th>
+            <th scope="col">Live Matches</th>
+            <th scope="col">Regex</th>
+        </tr>
+    </thead>
+    <tbody>
+        [% FOR pair IN hg.search_pat %]
+            <tr>
+                <td>[%= pair.key %]</td>
+                <td><a href="/searches/[%= pair.key %]/live">[%= hg.r.scard("live_match:$pair.key") %]</a></td>
+                <td>[%=pair.value | html %]</td>
+            </tr>
+        [% END %]
+    </tbody>
+</table>

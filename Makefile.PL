@@ -4,9 +4,9 @@ use ExtUtils::MakeMaker;
 
 WriteMakefile(
     NAME                => 'HTTPGrepUI',
-    AUTHOR              => q{YOUR NAME <youremail@example.com>},
+    AUTHOR              => q{Joshua Barratt <josh@mediatemple.net>},
     VERSION_FROM        => 'lib/HTTPGrepUI.pm',
-    ABSTRACT            => 'YOUR APPLICATION ABSTRACT',
+    ABSTRACT            => 'Web UI front to HTTPGrep',
     ($ExtUtils::MakeMaker::VERSION >= 6.3002
       ? ('LICENSE'=> 'perl')
       : ()),
@@ -15,6 +15,7 @@ WriteMakefile(
         'Test::More' => 0,
         'YAML'       => 0,
         'Dancer'     => 1.1805,
+        'HTTPGrep'   => 0,
     },
     dist                => { COMPRESS => 'gzip -9f', SUFFIX => 'gz', },
     clean               => { FILES => 'HTTPGrepUI-*' },

@@ -1,10 +1,8 @@
 views/index.tt
-views/layouts
 views/layouts/main.tt
 public/favicon.ico
 public/dispatch.fcgi
 public/404.html
-public/css
 public/css/error.css
 public/css/style.css
 public/500.html

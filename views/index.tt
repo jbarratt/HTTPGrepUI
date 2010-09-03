@@ -1,22 +1,28 @@
 
 
-<p>Current run: [%= hg.r.llen('uri_queue') %] remaining of [%= hg.r.get('scan_size') %], completion estimated in [%= hg.completion_estimate %]</p>
+<p>
+Current run: [%= hg.r.llen('uri_queue') %] remaining of [%= hg.r.get('scan_size') %], completion estimated in [%= hg.completion_estimate %]<br/>
+Links below provide CSV downloads of all results from the currently running scan as well as the last one that was completed.<br/>
+Click on the row and column headers to get the contents of that whole group.
+</p>
 
 <table>
     <thead>
         <tr>
             <th scope="col">Search</th>
             [% FOR c IN hg.r.smembers('ptr_classifications').sort %]
-            <th scope="col">[%= c %]</th>
+            <th scope="col"><a href="/classes/[%= c %]">[%= c %]</a></th>
             [% END %]
         </tr>
     </thead>
     <tbody>
         [% FOR p IN hg.search_pat.keys %]    
             <tr>
-                <th scope="row">[%= p %]</th>
+                <th scope="row"><a href="/searches/[%= p %]">[%= p %]</a></th>
                 [% FOR c IN hg.r.smembers('ptr_classifications').sort %]
-                    <td><a href="/searches/[%= p %]/keys/[%= c %]">[% hg.r.scard("last_match:$p:$c") %]</a></td>
+                    <td>
+                        <a href="/searches/[%= p %]/classes/[%= c %]">[% hg.r.scard("last_match:$p:$c") + hg.r.scard("live_match:$p:$c") %]</a>
+                    </td>
                 [% END %]
             </tr>
         [% END %]
@@ -27,7 +33,6 @@
     <thead>
         <tr>
             <th scope="col">Search</th>
-            <th scope="col">Live Matches</th>
             <th scope="col">Regex</th>
         </tr>
     </thead>
@@ -35,7 +40,6 @@
         [% FOR pair IN hg.search_pat %]
             <tr>
                 <td>[%= pair.key %]</td>
-                <td><a href="/searches/[%= pair.key %]/live">[%= hg.r.scard("live_match:$pair.key") %]</a></td>
                 <td>[%=pair.value | html %]</td>
             </tr>
         [% END %]

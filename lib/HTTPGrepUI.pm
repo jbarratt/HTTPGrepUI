@@ -2,7 +2,7 @@ package HTTPGrepUI;
 use Dancer ':syntax';
 use HTTPGrep;
 
-our $VERSION = '0.1';
+our $VERSION = '0.2';
 my $hg = HTTPGrep->new_with_options();
 
 get '/' => sub {
@@ -10,16 +10,23 @@ get '/' => sub {
     template 'index' => { hg => $hg };
 };
 
-get '/searches/:search/keys/:key' => sub {
+get '/searches/:search/classes/:class' => sub {
     $hg->reconnect_redis();
     content_type 'text/plain';
-    join("\n", $hg->r->smembers("last_match:" . params->{search} . ":" . params->{key}));
+    join("\n", $hg->get_results(search => params->{search}, class => params->{class}));
 };
 
-get '/searches/:search/live' => sub {
+get '/classes/:class' => sub {
     $hg->reconnect_redis();
     content_type 'text/plain';
-    join("\n", $hg->r->smembers("live_match:" . params->{search}));
+    join("\n", $hg->get_results(class => params->{class}));
 };
+
+get '/searches/:search' => sub {
+    $hg->reconnect_redis();
+    content_type 'text/plain';
+    join("\n", $hg->get_results(search => params->{search}));
+};
+
 
 true;

@@ -16,6 +16,8 @@ WriteMakefile(
         'YAML'       => 0,
         'Dancer'     => 1.1805,
         'HTTPGrep'   => 0,
+        'Template'   => 0,
+        'YAML::XS'   => 0,
     },
     dist                => { COMPRESS => 'gzip -9f', SUFFIX => 'gz', },
     clean               => { FILES => 'HTTPGrepUI-*' },

@@ -21,7 +21,7 @@ Click on the row and column headers to get the contents of that whole group.
                 <th scope="row"><a href="/searches/[%= p %]">[%= p %]</a></th>
                 [% FOR c IN hg.r.smembers('ptr_classifications').sort %]
                     <td>
-                        <a href="/searches/[%= p %]/classes/[%= c %]">[% hg.r.scard("last_match:$p:$c") + hg.r.scard("live_match:$p:$c") %]</a>
+                        <a href="/searches/[%= p %]/classes/[%= c %]">[%= hg.r.sunion("live_match:$p:$c", "last_match:$p:$c").size %]</a>
                     </td>
                 [% END %]
             </tr>
